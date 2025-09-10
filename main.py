@@ -3,17 +3,45 @@ import random
 import time
 
 # ------------------------
-# 랜덤 단어 100개 생성 (2~8글자, 한글 조합)
+# 단어 리스트 -> 짧은 파이썬 코드 100개
 # ------------------------
-def generate_word_list(num_words=100):
-    chosung = list("가나다라마바사아자차카타파하")
-    jungsung = list("ㅏㅑㅓㅕㅗㅛㅜㅠㅡㅣ")
-    word_list = []
-    for _ in range(num_words):
-        length = random.randint(2, 8)
-        word = "".join(random.choice(chosung) + random.choice(jungsung) for _ in range(length))
-        word_list.append(word)
-    return word_list
+word_list = [
+"print('Hello World!')","print(1 + 1)","print(10 - 3)","print(2 * 5)","print(10 / 2)",
+"print(10 // 3)","print(10 % 3)","print(2 ** 3)","print('Python' + ' Rocks!')","print('A' * 5)",
+"for i in range(5): print(i)","for i in range(1,6): print(i*i)","nums = [1,2,3]; print(nums)",
+"nums = list(range(5)); print(nums)","print([x*2 for x in range(5)])","print([x**2 for x in range(6)])",
+"x = 5; print(x)","x = 10; y = 20; print(x+y)","x = 'Hello'; y = 'World'; print(x+y)","x = 'Python'; print(x[0])",
+"x = 'Python'; print(x[-1])","x = 'Python'; print(x[1:4])","mylist = [1,2,3]; print(mylist[1])",
+"mylist = [0]*5; print(mylist)","mylist = [1,2,3,4,5]; print(mylist[:3])","print(list('Python'))",
+"x = 10; print(x>5)","x = 3; print(x==3)","x = 5; print(x!=3)","x = 2; print(x<5 and x>0)","x = 4; print(x>0 or x<0)",
+"x = 5 if 3>2 else 10; print(x)","def f(): return 10; print(f())","def add(a,b): return a+b; print(add(2,3))",
+"x = [1,2,3]; x.append(4); print(x)","x = [1,2,3,4]; x.pop(); print(x)","x = [1,2,3,4]; x.remove(2); print(x)",
+"x = [1,2,3]; print(len(x))","x = [5,3,1]; x.sort(); print(x)","x = [5,3,1]; x.reverse(); print(x)",
+"x = ['a','b','c']; print(' '.join(x))","x = 'Hello World'; print(x.split())","print('Python'.upper())",
+"print('Python'.lower())","print('  Hello  '.strip())","print('Python'.replace('Py','J'))","x = 10; x += 5; print(x)",
+"x = 10; x -= 3; print(x)","x = 2; x *= 3; print(x)","x = 10; x /= 2; print(x)","x = [1,2,3]; print(sum(x))",
+"x = [1,2,3]; print(max(x))","x = [1,2,3]; print(min(x))","x = [1,2,3]; print(sorted(x))","x = [1,2,3]; print(list(reversed(x)))",
+"x = 0; print(bool(x))","x = 5; print(bool(x))","x = None; print(bool(x))","x = ['a','b','c']; print('b' in x)",
+"x = ['a','b','c']; print('d' not in x)","x = range(5); print(list(x))","x = list(range(10)); print(x[::2])",
+"x = list(range(10)); print(x[1::2])","x = [1,2,3]; y = [4,5,6]; print(x+y)","x = [1,2,3]; print(x*2)",
+"x = {1,2,3}; print(2 in x)","x = {1,2,3}; print(len(x))","x = {'a':1,'b':2}; print(x['a'])","x = {'a':1,'b':2}; x['c']=3; print(x)",
+"x = {'a':1,'b':2}; del x['b']; print(x)","x = {'a':1,'b':2}; print(list(x.keys()))","x = {'a':1,'b':2}; print(list(x.values()))",
+"x = 10; print(bin(x))","x = 10; print(hex(x))","x = 10; print(oct(x))","x = 5; print(float(x))","x = 3.5; print(int(x))",
+"x = '123'; print(int(x))","x = '3.14'; print(float(x))","x = 5; print(abs(x))","x = -5; print(abs(x))","x = 16; print(x**0.5)",
+"round(3.14159,2); print(round(3.14159,2))","x = 'Python'; print(list(x))","x = 'Python'; print(x[::-1])",
+"x = [1,2,3]; print([i*2 for i in x])","x = [1,2,3]; print([i**2 for i in x])","x = range(5); print([i*2 for i in x])",
+"x = [1,2,3]; print([i+1 for i in x if i>1])","x = 'hello'; print(' '.join(x))","x = 'a,b,c'; print(x.split(','))",
+"x = [1,2,3,4]; print(sum(x)/len(x))","x = list(range(5)); print([i%2==0 for i in x])","x = [1,2,3]; print(list(map(lambda x:x*2, x)))",
+"x = [1,2,3]; print(list(filter(lambda x:x>1, x)))","x = [1,2,3,4]; print(any(i>3 for i in x))","x = [1,2,3,4]; print(all(i>0 for i in x))",
+"x = 'Python'; print(any(c.isupper() for c in x))","x = 'Python'; print(all(c.isalpha() for c in x))","x = [1,2,3]; print(min(x)+max(x))",
+"x = [1,2,3]; print(sum(x)**2)","x = 'abc'; print(''.join(reversed(x)))","x = [1,2,3]; y=[4,5,6]; print([a+b for a,b in zip(x,y)])",
+"x = [1,2,3]; print(list(reversed(x)))","x = [1,2,3]; print(list(range(len(x))))","x = [1,2,3]; print(x.index(2))",
+"x = [1,2,3]; x.insert(1,100); print(x)","x = [1,2,3,4,5]; print(x[::2])","x = [1,2,3,4,5]; print(x[1::2])",
+"x = [1,2,3]; x.extend([4,5]); print(x)","x = ['a','b','c']; print([s.upper() for s in x])","x = [1,2,3]; print(list(map(lambda x:x+1,x)))",
+"x = [1,2,3,4]; print([i*i for i in x if i%2==0])","x = 'hello'; print(x.capitalize())","x = 'hello world'; print(x.title())",
+"x = 'hello world'; print(x.replace('world','Python'))","x = 10; print(str(x))","x = 5; print(bool(x==5))",
+"x = [1,2,3]; print(sum([i for i in x if i>1]))"
+]
 
 # ------------------------
 # 세션 상태 초기화
@@ -22,10 +50,8 @@ if "game_started" not in st.session_state:
     st.session_state.game_started = False
 if "score" not in st.session_state:
     st.session_state.score = 0
-if "word_list" not in st.session_state:
-    st.session_state.word_list = generate_word_list()
 if "current_word" not in st.session_state:
-    st.session_state.current_word = random.choice(st.session_state.word_list)
+    st.session_state.current_word = random.choice(word_list)
 if "word_count" not in st.session_state:
     st.session_state.word_count = 0
 if "total_words" not in st.session_state:
@@ -50,18 +76,17 @@ def submit_word():
     # 맞으면 시간 기반 점수, 틀리면 0점
     if st.session_state.input_text == st.session_state.current_word:
         base_score = len(st.session_state.current_word)
-        speed_bonus = max(1, int((3 - elapsed_time) * 10))  # 3초 기준
+        speed_bonus = max(1, int((3 - elapsed_time) * 10))
         st.session_state.score += base_score * speed_bonus
 
     st.session_state.word_count += 1
 
-    # 게임 종료 또는 다음 단어
     if st.session_state.word_count >= st.session_state.total_words:
         st.session_state.game_started = False
-        container.empty()  # 게임 화면 지우기
+        container.empty()  # 게임 화면 제거
         st.success(f"게임 종료! 최종 점수: {st.session_state.score}")
     else:
-        st.session_state.current_word = random.choice(st.session_state.word_list)
+        st.session_state.current_word = random.choice(word_list)
     
     st.session_state.input_text = ""  # 입력창 초기화
 
@@ -77,7 +102,7 @@ if not st.session_state.game_started:
             st.session_state.start_time = time.time()
             st.session_state.word_count = 0
             st.session_state.score = 0
-            st.session_state.current_word = random.choice(st.session_state.word_list)
+            st.session_state.current_word = random.choice(word_list)
             container.empty()  # 시작 화면 제거
 
 # ------------------------
@@ -90,7 +115,6 @@ if st.session_state.game_started:
         st.write(f"단어 {st.session_state.word_count+1}/{st.session_state.total_words}")
         st.subheader(st.session_state.current_word)
 
-        # Enter만으로 제출
         st.text_input(
             "단어 입력 후 Enter",
             key="input_text",
