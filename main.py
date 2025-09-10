@@ -95,9 +95,9 @@ def submit_word():
 # ------------------------
 if not st.session_state.game_started:
     with container.container():
-        st.title("타자 연습 고난도 버전")
+        st.title("타자 연습 프로그래밍 버전")
         st.write("게임을 시작하려면 아래 버튼을 눌러주세요!")
-        if st.button("게임 시작"):
+        if st.button("start"):
             st.session_state.game_started = True
             st.session_state.start_time = time.time()
             st.session_state.word_count = 0
