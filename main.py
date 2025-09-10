@@ -3,9 +3,9 @@ import time
 
 # 초기화
 if "grid" not in st.session_state:
-    st.session_state.grid = [[1 for _ in range(7)] for _ in range(3)]  # 위쪽 벽돌
-    st.session_state.ball_pos = [5, 3]  # (y, x)
-    st.session_state.ball_dir = [-1, 1]  # (dy, dx)
+    st.session_state.grid = [[1 for _ in range(7)] for _ in range(3)]  # 벽돌
+    st.session_state.ball_pos = [5, 3]  # y, x
+    st.session_state.ball_dir = [-1, 1]  # dy, dx
     st.session_state.paddle_x = 3
     st.session_state.score = 0
     st.session_state.game_over = False
@@ -29,7 +29,7 @@ def render():
         grid_display += row + "\n"
     st.text(grid_display)
 
-# 공 이동 로직 (자동)
+# 공 이동
 def move_ball():
     if st.session_state.game_over:
         return
@@ -55,7 +55,7 @@ def move_ball():
         dy *= -1
         st.session_state.score += 10
 
-    # 위치 갱신
+    # 공 위치 갱신
     st.session_state.ball_pos = [ball_y + dy, ball_x + dx]
     st.session_state.ball_dir = [dy, dx]
 
@@ -63,7 +63,6 @@ def move_ball():
     if st.session_state.ball_pos[0] >= ROWS:
         st.session_state.game_over = True
 
-# 자동 실행 (지연 후 rerun)
 move_ball()
 
 st.title("벽돌깨기 🎮")
@@ -73,7 +72,7 @@ st.write(f"점수: {st.session_state.score}")
 if st.session_state.game_over:
     st.error("게임 오버! 😢")
 
-# 조작 버튼
+# 패들 좌우 버튼
 col1, col2, col3 = st.columns(3)
 with col1:
     if st.button("◀"):
@@ -82,12 +81,12 @@ with col3:
     if st.button("▶"):
         st.session_state.paddle_x = min(COLS-3, st.session_state.paddle_x+1)
 
-# 리셋 버튼
+# 게임 리셋
 if st.button("게임 리셋"):
     st.session_state.clear()
     st.experimental_rerun()
 
-# 짧은 지연 후 자동 새로고침
+# 자동 새로고침
 if not st.session_state.game_over:
     time.sleep(0.2)
     st.experimental_rerun()
