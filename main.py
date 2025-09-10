@@ -1,9 +1,5 @@
 import streamlit as st
-import random
-from streamlit_autorefresh import st_autorefresh
-
-# 자동 새로고침 (100ms 간격)
-st_autorefresh(interval=100, key="refresh")
+import time
 
 # 초기화
 if "grid" not in st.session_state:
@@ -33,8 +29,11 @@ def render():
         grid_display += row + "\n"
     st.text(grid_display)
 
-if not st.session_state.game_over:
-    # 공 이동
+# 공 이동 로직 (자동)
+def move_ball():
+    if st.session_state.game_over:
+        return
+
     ball_y, ball_x = st.session_state.ball_pos
     dy, dx = st.session_state.ball_dir
 
@@ -56,7 +55,7 @@ if not st.session_state.game_over:
         dy *= -1
         st.session_state.score += 10
 
-    # 공 위치 갱신
+    # 위치 갱신
     st.session_state.ball_pos = [ball_y + dy, ball_x + dx]
     st.session_state.ball_dir = [dy, dx]
 
@@ -64,7 +63,9 @@ if not st.session_state.game_over:
     if st.session_state.ball_pos[0] >= ROWS:
         st.session_state.game_over = True
 
-# 출력
+# 자동 실행 (지연 후 rerun)
+move_ball()
+
 st.title("벽돌깨기 🎮")
 render()
 st.write(f"점수: {st.session_state.score}")
@@ -84,4 +85,9 @@ with col3:
 # 리셋 버튼
 if st.button("게임 리셋"):
     st.session_state.clear()
+    st.experimental_rerun()
+
+# 짧은 지연 후 자동 새로고침
+if not st.session_state.game_over:
+    time.sleep(0.2)
     st.experimental_rerun()
