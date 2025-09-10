@@ -18,6 +18,8 @@ def generate_word_list(num_words=100):
 # ------------------------
 # 세션 상태 초기화
 # ------------------------
+if "game_started" not in st.session_state:
+    st.session_state.game_started = False
 if "score" not in st.session_state:
     st.session_state.score = 0
 if "word_list" not in st.session_state:
@@ -30,42 +32,48 @@ if "total_words" not in st.session_state:
     st.session_state.total_words = 10
 if "start_time" not in st.session_state:
     st.session_state.start_time = time.time()
-if "input_text" not in st.session_state:
-    st.session_state.input_text = ""
 
 # ------------------------
-# 타이틀 및 상태 표시
+# 게임 시작 화면
 # ------------------------
-st.title("빠른 타자 게임 ⏱")
-st.write(f"점수: {st.session_state.score}")
-st.write(f"단어 {st.session_state.word_count+1}/{st.session_state.total_words}")
-st.subheader(st.session_state.current_word)
+if not st.session_state.game_started:
+    st.title("타자 연습 고난도 버전")
+    st.write("게임을 시작하려면 아래 버튼을 눌러주세요!")
+    if st.button("게임 시작"):
+        st.session_state.game_started = True
+        st.session_state.start_time = time.time()
+        st.experimental_rerun()  # 버튼 누르면 새로고침하여 게임 시작
+else:
+    # ------------------------
+    # 게임 화면
+    # ------------------------
+    st.title("빠른 타자 게임 ⏱")
+    st.write(f"점수: {st.session_state.score}")
+    st.write(f"단어 {st.session_state.word_count+1}/{st.session_state.total_words}")
+    st.subheader(st.session_state.current_word)
 
-# ------------------------
-# 입력창
-# ------------------------
-st.session_state.input_text = st.text_input("단어 입력 후 Enter", value="", key="input_box")
+    # 입력창
+    with st.form(key="typing_form", clear_on_submit=True):
+        user_input = st.text_input("단어 입력 후 Enter")
+        submitted = st.form_submit_button("제출")
 
-# ------------------------
-# Enter 입력 시 다음 단어로 이동
-# ------------------------
-if st.session_state.input_text != "":
-    elapsed_time = time.time() - st.session_state.start_time
-    st.session_state.start_time = time.time()
+        if submitted:
+            elapsed_time = time.time() - st.session_state.start_time
+            st.session_state.start_time = time.time()
 
-    # 맞았으면 점수 계산, 틀리면 0점
-    if st.session_state.input_text == st.session_state.current_word:
-        base_score = len(st.session_state.current_word)
-        speed_bonus = max(1, int((3 - elapsed_time) * 10))  # 3초 기준
-        gained_score = base_score * speed_bonus
-        st.session_state.score += gained_score
+            # 맞았으면 점수 계산, 틀리면 0점
+            if user_input == st.session_state.current_word:
+                base_score = len(st.session_state.current_word)
+                speed_bonus = max(1, int((3 - elapsed_time) * 10))  # 3초 기준
+                gained_score = base_score * speed_bonus
+                st.session_state.score += gained_score
+            else:
+                gained_score = 0  # 틀리면 0점
 
-    st.session_state.word_count += 1
+            st.session_state.word_count += 1
 
-    # 게임 종료 또는 다음 단어
-    if st.session_state.word_count >= st.session_state.total_words:
-        st.success(f"게임 종료! 최종 점수: {st.session_state.score}")
-    else:
-        st.session_state.current_word = random.choice(st.session_state.word_list)
-
-    st.session_state.input_text = ""  # 입력창 초기화
+            # 게임 종료 또는 다음 단어
+            if st.session_state.word_count >= st.session_state.total_words:
+                st.success(f"게임 종료! 최종 점수: {st.session_state.score}")
+            else:
+                st.session_state.current_word = random.choice(st.session_state.word_list)
