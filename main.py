@@ -2,13 +2,18 @@ import streamlit as st
 import random
 import time
 
-# 초기화
+# 세션 상태 초기화
 if "score" not in st.session_state:
     st.session_state.score = 0
+if "word_list" not in st.session_state:
     st.session_state.word_list = ["축제", "게임", "프로그래밍", "재미", "코딩", "참여", "도전", "점수"]
+if "current_word" not in st.session_state:
     st.session_state.current_word = random.choice(st.session_state.word_list)
+if "word_count" not in st.session_state:
     st.session_state.word_count = 0
+if "total_words" not in st.session_state:
     st.session_state.total_words = 10
+if "start_time" not in st.session_state:
     st.session_state.start_time = time.time()
 
 st.title("빠른 타자 게임 ⏱")
@@ -21,13 +26,11 @@ st.subheader(st.session_state.current_word)
 user_input = st.text_input("단어 입력", value="", key="input_box")
 
 if user_input == st.session_state.current_word:
-    # 시간 계산
-    elapsed_time = time.time() - st.session_state.start_time  # 단어 입력에 걸린 시간
-    st.session_state.start_time = time.time()  # 다음 단어 측정 시작
+    elapsed_time = time.time() - st.session_state.start_time
+    st.session_state.start_time = time.time()
 
-    # 점수 계산: 빠를수록 높음 (예: 0.1초 당 보너스)
     base_score = len(st.session_state.current_word)
-    speed_bonus = max(1, int((3 - elapsed_time) * 10))  # 3초 기준, 빠를수록 보너스 높음
+    speed_bonus = max(1, int((3 - elapsed_time) * 10))
     gained_score = base_score * speed_bonus
     st.session_state.score += gained_score
 
