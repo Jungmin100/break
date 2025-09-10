@@ -41,18 +41,18 @@ if not st.session_state.game_started:
     st.write("게임을 시작하려면 아래 버튼을 눌러주세요!")
     if st.button("게임 시작"):
         st.session_state.game_started = True
-        st.session_state.start_time = time.time()
-        st.experimental_rerun()  # 버튼 누르면 새로고침하여 게임 시작
-else:
-    # ------------------------
-    # 게임 화면
-    # ------------------------
+        st.session_state.start_time = time.time()  # 게임 시작 시간 기록
+
+# ------------------------
+# 게임 화면
+# ------------------------
+if st.session_state.game_started:
     st.title("빠른 타자 게임 ⏱")
     st.write(f"점수: {st.session_state.score}")
     st.write(f"단어 {st.session_state.word_count+1}/{st.session_state.total_words}")
     st.subheader(st.session_state.current_word)
 
-    # 입력창
+    # 폼 사용하여 Enter 키 제출 감지
     with st.form(key="typing_form", clear_on_submit=True):
         user_input = st.text_input("단어 입력 후 Enter")
         submitted = st.form_submit_button("제출")
@@ -61,7 +61,7 @@ else:
             elapsed_time = time.time() - st.session_state.start_time
             st.session_state.start_time = time.time()
 
-            # 맞았으면 점수 계산, 틀리면 0점
+            # 맞으면 시간 기반 점수, 틀리면 0점
             if user_input == st.session_state.current_word:
                 base_score = len(st.session_state.current_word)
                 speed_bonus = max(1, int((3 - elapsed_time) * 10))  # 3초 기준
