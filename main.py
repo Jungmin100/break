@@ -36,6 +36,11 @@ if "input_text" not in st.session_state:
     st.session_state.input_text = ""
 
 # ------------------------
+# 컨테이너 생성
+# ------------------------
+container = st.empty()
+
+# ------------------------
 # 단어 제출 함수
 # ------------------------
 def submit_word():
@@ -52,7 +57,8 @@ def submit_word():
 
     # 게임 종료 또는 다음 단어
     if st.session_state.word_count >= st.session_state.total_words:
-        st.session_state.game_started = False  # 게임 종료 후 시작 화면으로
+        st.session_state.game_started = False
+        container.empty()  # 게임 화면 지우기
         st.success(f"게임 종료! 최종 점수: {st.session_state.score}")
     else:
         st.session_state.current_word = random.choice(st.session_state.word_list)
@@ -63,27 +69,30 @@ def submit_word():
 # 게임 시작 화면
 # ------------------------
 if not st.session_state.game_started:
-    st.title("타자 연습 고난도 버전")
-    st.write("게임을 시작하려면 아래 버튼을 눌러주세요!")
-    if st.button("게임 시작"):
-        st.session_state.game_started = True
-        st.session_state.start_time = time.time()
-        st.session_state.word_count = 0
-        st.session_state.score = 0
-        st.session_state.current_word = random.choice(st.session_state.word_list)
+    with container.container():
+        st.title("타자 연습 고난도 버전")
+        st.write("게임을 시작하려면 아래 버튼을 눌러주세요!")
+        if st.button("게임 시작"):
+            st.session_state.game_started = True
+            st.session_state.start_time = time.time()
+            st.session_state.word_count = 0
+            st.session_state.score = 0
+            st.session_state.current_word = random.choice(st.session_state.word_list)
+            container.empty()  # 시작 화면 제거
 
 # ------------------------
 # 게임 화면
 # ------------------------
 if st.session_state.game_started:
-    st.title("빠른 타자 게임 ⏱")
-    st.write(f"점수: {st.session_state.score}")
-    st.write(f"단어 {st.session_state.word_count+1}/{st.session_state.total_words}")
-    st.subheader(st.session_state.current_word)
+    with container.container():
+        st.title("빠른 타자 게임 ⏱")
+        st.write(f"점수: {st.session_state.score}")
+        st.write(f"단어 {st.session_state.word_count+1}/{st.session_state.total_words}")
+        st.subheader(st.session_state.current_word)
 
-    # Enter만으로 제출
-    st.text_input(
-        "단어 입력 후 Enter",
-        key="input_text",
-        on_change=submit_word
-    )
+        # Enter만으로 제출
+        st.text_input(
+            "단어 입력 후 Enter",
+            key="input_text",
+            on_change=submit_word
+        )
